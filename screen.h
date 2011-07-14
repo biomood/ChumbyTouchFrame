@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #define FRAMESIZE 320*240*2
 
@@ -18,3 +19,9 @@ void draw_pixel(int x, int y, char * colour);
 
 // returns a byte that representing rgb colour
 char * rgb_to_byte(int red, int green, int blue);
+
+// implementation of Bresenham's line drawing algorithm
+void draw_line(int x1, int y1, int x2, int y2);
+
+// swap ints a and b
+void swap(int * a, int * b);

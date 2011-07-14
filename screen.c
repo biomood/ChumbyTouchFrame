@@ -40,3 +40,52 @@ char * rgb_to_byte(int red, int green, int blue) {
 	
 	return arr;
 }
+
+void line_draw(int x0, int y0, int x1, int y1) {
+    char * colour = rgb_to_byte(0, 0, 0);
+    
+    int steep = abs(y1-y0) > abs(x1-x0);
+    if (steep) {
+        swap(x0, y0);
+        swap(x1, y1);
+    }
+    if (x0 > x1) {
+        swap(x0, x1);
+        swap(y0, y1);
+    }
+    
+    int deltax = x1-x0;
+    int deltay = abs(y1-y0);
+    int error = deltax/2;
+    int ystep;
+    int y=y0;
+    
+    if (y0 < y1 ) {
+        ystep = 1;
+    }
+    else {
+        ystep = -1;
+    }
+    
+    int i;
+    for (i=x0; i<x1; i++) {
+        if (steep) {
+            draw_pixel(y, x, colour);
+        }
+        else {
+            draw_pixel(x, y, colour);
+        }
+        
+        error = error - deltay;
+        if (error < 0) {
+            y = y + ystep;
+            error = error + deltax;
+        }
+    }
+}
+
+void swap(int * a, int * b) {
+    int *temp = a;
+    a = b;
+    b = temp;
+}
