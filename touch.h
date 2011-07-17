@@ -23,6 +23,6 @@ struct touch_coord {
 int init_touchscreen();
 
 // waits until the user has entered a touch and fills pointer
-struct touch_coord get_touch();
+struct touch_coord * get_touch();
 
 #endif
