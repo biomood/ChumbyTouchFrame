@@ -1,6 +1,6 @@
 #include "screen.h"
 
-void init_screen() {
+int init_screen() {
     // open the framebuffer to read/write
 	frame = fopen(framestr, "r+b");
     
@@ -46,12 +46,12 @@ char * rgb_to_byte(int red, int green, int blue) {
 void draw_line(int x0, int y0, int x1, int y1, char * colour) {
     int steep = abs(y1-y0) > abs(x1-x0);
     if (steep) {
-        swap(x0, y0);
-        swap(x1, y1);
+        swap(&x0, &y0);
+        swap(&x1, &y1);
     }
     if (x0 > x1) {
-        swap(x0, x1);
-        swap(y0, y1);
+        swap(&x0, &x1);
+        swap(&y0, &y1);
     }
     
     int deltax = x1-x0;
