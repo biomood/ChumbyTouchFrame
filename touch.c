@@ -10,7 +10,7 @@ int init_touchscreen() {
 }
 
 struct touch_coord * get_touch() {
-    struct input_event eventlist = calloc(sizeof(struct input_event)*5);
+    struct input_event eventlist = calloc(5, sizeof(struct input_event));
     int count = 0;
     
     // attempt to retrieve a full set of touch coordinates

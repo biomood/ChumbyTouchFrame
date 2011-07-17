@@ -6,13 +6,13 @@ touchscreen: main.o screen.o touch.o
 	$(CC) main.o screen.o touch.o -o touchscreen
 
 main.o: main.c screen.h touch.h
-	$(CC) main.c
+	$(CC) -c main.c
 
 screen.o: screen.c
-	$(CC) screen.c
+	$(CC) -c screen.c
 
 touch.o: touch.c
-	$(CC) touch.c
+	$(CC) -c touch.c
 
 clean:
 	rm -rf *o touchscreen
