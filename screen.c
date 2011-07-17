@@ -68,7 +68,7 @@ void draw_line(int x0, int y0, int x1, int y1, char * colour) {
     }
     
     int x;
-    for (x=x0; i<x1; i++) {
+    for (x=x0; x<x1; x++) {
         if (steep) {
             draw_pixel(y, x, colour);
         }
