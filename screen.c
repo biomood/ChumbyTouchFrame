@@ -7,14 +7,16 @@ void init_screen() {
 	if (frame) {
         // make an array size of the framebuffer
         framebuffer = malloc(sizeof(char)*(FRAMESIZE));
-		return 0;
+		return 1;
 	}
 	else {
-		return 1;
+		return 0;
     }
 }
 
 void set_colour(char colour[]) {
+    
+    // iterate through the framebuffer setting each pixel to colour
     int i;
 	for (i=0; i<(FRAMESIZE); i=i+2) {
 		framebuffer[i] = colour[0];
@@ -41,9 +43,7 @@ char * rgb_to_byte(int red, int green, int blue) {
 	return arr;
 }
 
-void line_draw(int x0, int y0, int x1, int y1) {
-    char * colour = rgb_to_byte(0, 0, 0);
-    
+void draw_line(int x0, int y0, int x1, int y1, char * colour) {
     int steep = abs(y1-y0) > abs(x1-x0);
     if (steep) {
         swap(x0, y0);

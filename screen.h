@@ -1,3 +1,6 @@
+#ifndef SCREEN_H
+#define SCREEN_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -21,7 +24,9 @@ void draw_pixel(int x, int y, char * colour);
 char * rgb_to_byte(int red, int green, int blue);
 
 // implementation of Bresenham's line drawing algorithm
-void draw_line(int x1, int y1, int x2, int y2);
+void draw_line(int x0, int y0, int x1, int y1, char * colour);
 
 // swap ints a and b
 void swap(int * a, int * b);
+
+#endif

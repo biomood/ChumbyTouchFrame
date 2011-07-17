@@ -3,14 +3,42 @@
 #include "screen.h"
 #include "touch.h"
 
+void calibrate_screen();
+void draw_cursor(int x, int y);
+
 // calibrates the screen
 void calibrate_screen() {
+    // attempt to retrieve 3 touches
+    draw_cursor(40, 40);
+    struct touch_coord * t1 = get_touch();
     
+    draw_cursor(160, 120);
+    struct touch_coord * t2 = get_touch();
+    
+    draw_cursor(280, 200);
+    struct touch_coord * t3 = get_touch();
+    
+    // return if we don't have 3 complete touches
+    if (!(t1 && t2 && t3)) {
+        printf("Unable to retrieve first coordinate");
+        exit(0);
+    }
+    
+    
+}
+
+// draws a cursor to the screen with origin at x, y
+void draw_cursor(int x, int y) {
+    char * black = rgb_to_byte(0, 0, 0);
+    
+    // draw the first cursor
+    draw_line(x, y-10, x, y+10, black);
+    draw_line(x-10, y, x+10, y, black);
 }
 
 int main() {
     // attempt to initiate the frame buffer
-	if (init_screen()==0) {
+	if (init_screen()) {
         printf("Opened the framebuffer \n");
     }
     else {
@@ -19,7 +47,7 @@ int main() {
     }
     
     // attempt to initiate the touch screen
-    if (init_touchscreen() > -1) {
+    if (init_touchscreen()) {
         printf("Opened the touchscreen \n");
         char name[256] = "Unknown";
         ioctl (td, EVIOCGNAME (sizeof (name)), name);
