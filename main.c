@@ -36,7 +36,7 @@ void draw_cursor(int x, int y) {
     draw_line(x-10, y, x+10, y, black);
 }
 
-int main() {
+int main(void) {
     // attempt to initiate the frame buffer
 	if (init_screen()) {
         printf("Opened the framebuffer \n");
