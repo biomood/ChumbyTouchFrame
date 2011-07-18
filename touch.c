@@ -22,7 +22,7 @@ struct touch_coord * get_touch() {
     while (1) {        
         int retval = read(td, &ev, sizeof(struct input_event));
         if (retval > 0) {
-            eventlist[count] == ev;
+            eventlist[count] = ev;
             
             if (ev.value = EV_SYN) {
                 break;
