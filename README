@@ -1,5 +1,8 @@
 Chumby Library
 
+Two C libraries, screen.h and touch.h for interacting with the frame buffer and touch screen of the chumby.
+Very much a work in progress, setting up calibration for the touch screen.
+
 To build on a Chumby:
 1. ensure that you have the gcc compiler installed
 2. upload the directory to the chumby
