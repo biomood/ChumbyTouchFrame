@@ -7,7 +7,7 @@
 
 #define FRAMESIZE 320*240*2
 
-extern char framestr[] = "/dev/fb0";
+extern char framestr[];
 extern char * framebuffer;
 extern FILE * frame;
 
