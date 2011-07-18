@@ -15,20 +15,25 @@ int init_touchscreen() {
 }
 
 struct touch_coord * get_touch() {
+    int found = 0;
+    
     struct input_event * eventlist = calloc(5, sizeof(struct input_event));
     int count = 0;
     
     // attempt to retrieve a full set of touch coordinates
     while (1) {        
         int retval = read(td, &ev, sizeof(struct input_event));
+        
         if (retval > 0) {
-            eventlist[count] = ev;
+            if (count <5) {
+                eventlist[count] = ev;
             
-            if (ev.value = EV_SYN) {
-                break;
+                if (ev.type == 0) {
+                    break;
+                }
+            
+                count++;
             }
-            
-            count++;
         }
     }
     
@@ -48,4 +53,24 @@ struct touch_coord * get_touch() {
     c->pressure = eventlist[2].value; // pressure
     
     return c;
+}
+
+void ignore_touches() {
+    struct input_event e;
+    int val;
+    int done = 0;
+    
+    while (!done) {
+        val = read(td, &e, sizeof(struct input_event));
+        if (val <=0) {
+            done = 1;
+        }
+    }
+}
+
+void print_event(struct input_event e) {
+    printf("Type %ld \n", e.type);
+    printf("Code %ld \n", e.code);
+    printf("Value %ld \n", e.value);
+    printf("\n");
 }

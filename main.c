@@ -8,19 +8,27 @@ void draw_cursor(int x, int y);
 
 // calibrates the screen
 void calibrate_screen() {
+    char * colour = rgb_to_byte(255, 255, 255);
+    
     // attempt to retrieve 3 touches
     draw_cursor(40, 40);
+    set_screen();
     struct touch_coord * t1 = get_touch();
+    set_colour(colour);
     
-    draw_cursor(160, 120);
+    draw_cursor(160, 150);
+    set_screen();
     struct touch_coord * t2 = get_touch();
+    set_colour(colour);
     
     draw_cursor(280, 200);
+    set_screen();
     struct touch_coord * t3 = get_touch();
+    set_colour(colour);
     
     // return if we don't have 3 complete touches
     if (!(t1 && t2 && t3)) {
-        printf("Unable to retrieve first coordinate");
+        printf("Unable to retrieve first coordinate \n");
         exit(0);
     }
     
@@ -59,7 +67,7 @@ int main(void) {
     }
     
     // set background to white
-	char * colour = rgb_to_byte(255, 0, 255);
+	char * colour = rgb_to_byte(255, 255, 255);
 	set_colour(colour);
 	
 	// write array to framebuffer

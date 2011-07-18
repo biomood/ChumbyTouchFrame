@@ -25,4 +25,10 @@ int init_touchscreen();
 // waits until the user has entered a touch and fills pointer
 struct touch_coord * get_touch();
 
+// call to ignore touches until a user lifts their finger
+void ignore_touches();
+
+// print the info about the event
+void print_event(struct input_event e);
+
 #endif

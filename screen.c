@@ -53,42 +53,38 @@ char * rgb_to_byte(int red, int green, int blue) {
 }
 
 void draw_line(int x0, int y0, int x1, int y1, char * colour) {
-    int steep = abs(y1-y0) > abs(x1-x0);
-    if (steep) {
-        swap(&x0, &y0);
-        swap(&x1, &y1);
-    }
-    if (x0 > x1) {
-        swap(&x0, &x1);
-        swap(&y0, &y1);
-    }
+    int dx = abs(x1-x0);
+    int dy = abs(y1-y0);
     
-    int deltax = x1-x0;
-    int deltay = abs(y1-y0);
-    int error = deltax/2;
-    int ystep;
-    int y=y0;
-    
-    if (y0 < y1 ) {
-        ystep = 1;
+    int sx, sy, e2;
+    if (x0 < x1) {
+        sx = 1;
     }
     else {
-        ystep = -1;
+        sx = -1;
     }
     
-    int x;
-    for (x=x0; x<x1; x++) {
-        if (steep) {
-            draw_pixel(y, x, colour);
+    if (y0 < y1) {
+        sy = 1;
+    }
+    else {
+        sy = -1;
+    }
+    
+    int err = dx-dy;
+    while (1) {
+        draw_pixel(x0, y0, colour);
+        if (x0==x1 && y0==y1) {
+            return;
         }
-        else {
-            draw_pixel(x, y, colour);
+        e2 = 2*err;
+        if (e2 > -dy) {
+            err = err - dy;
+            x0 = x0 + sx;
         }
-        
-        error = error - deltay;
-        if (error < 0) {
-            y = y + ystep;
-            error = error + deltax;
+        if (e2 < dx) {
+            err = err + dx;
+            y0 = y0 + sy;
         }
     }
 }
