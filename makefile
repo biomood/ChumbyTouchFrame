@@ -1,4 +1,5 @@
-CC=~/x-tools/arm-chumby-linux-gnueabi/bin/arm-chumby-linux-gnueabi-gcc
+#CC=~/x-tools/arm-chumby-linux-gnueabi/bin/arm-chumby-linux-gnueabi-gcc
+CC=gcc
 
 all: touchscreen
 

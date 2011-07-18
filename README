@@ -1,0 +1,12 @@
+Chumby Library
+
+To build on a Chumby:
+1. ensure that you have the gcc compiler installed
+2. upload the directory to the chumby
+3. cd to the directory
+4. enter 'make' in
+
+To build on PC
+1. open makefile to edit
+2. change 'CC' to the compiler you're using
+3. enter 'make'
