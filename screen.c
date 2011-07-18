@@ -1,5 +1,9 @@
 #include "screen.h"
 
+char framestr[] = "/dev/fb0";
+char * framebuffer;
+FILE * frame;
+
 int init_screen() {
     // open the framebuffer to read/write
 	frame = fopen(framestr, "r+b");
@@ -12,6 +16,11 @@ int init_screen() {
 	else {
 		return 0;
     }
+}
+
+void set_screen() {
+	rewind(frame);
+	fwrite(framebuffer, 1, FRAMESIZE, frame);
 }
 
 void set_colour(char colour[]) {

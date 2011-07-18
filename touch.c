@@ -1,5 +1,10 @@
 #include "touch.h"
 
+char touchstr[] = "/dev/input/event1";
+FILE * touchscreen;
+int td;
+struct input_event ev;
+
 int init_touchscreen() {
     if ((td = open(touchstr, O_RDONLY))>-1){
         return 1;
@@ -10,7 +15,7 @@ int init_touchscreen() {
 }
 
 struct touch_coord * get_touch() {
-    struct input_event eventlist = calloc(5, sizeof(struct input_event));
+    struct input_event * eventlist = calloc(5, sizeof(struct input_event));
     int count = 0;
     
     // attempt to retrieve a full set of touch coordinates
@@ -19,7 +24,7 @@ struct touch_coord * get_touch() {
         if (retval > 0) {
             eventlist[count] == ev;
             
-            if (ev.value == EV_SYN) {
+            if (ev.value = EV_SYN) {
                 break;
             }
             
@@ -31,7 +36,7 @@ struct touch_coord * get_touch() {
     // return with NULL if we haven't
     int i;
     for(i=0; i<5; i++) {
-        if (eventlist[i] == 0) {
+        if ((eventlist[i].value==0)&&(eventlist[i].type==0)&&(eventlist[i].code==0)) {
             return NULL;
         }
     }

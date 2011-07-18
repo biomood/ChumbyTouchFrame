@@ -7,12 +7,15 @@
 
 #define FRAMESIZE 320*240*2
 
-char framestr[] = "/dev/fb0";
-char * framebuffer;
-FILE * frame;
+extern char framestr[] = "/dev/fb0";
+extern char * framebuffer;
+extern FILE * frame;
 
 // initiates the frame buffer
 int init_screen();
+
+// sets the framebuffer
+void set_screen();
 
 // sets the entire frame buffer to the given colour
 void set_colour(char colour[]);

@@ -6,10 +6,10 @@
 #include <linux/input.h>
 #include <fcntl.h>
 
-char touchstr[] = "/dev/input/event1";
-FILE * touchscreen;
-int td;
-struct input_event ev;
+extern char touchstr[];
+extern FILE * touchscreen;
+extern int td;
+extern struct input_event ev;
 
 // used as friendly object to return
 struct touch_coord {
