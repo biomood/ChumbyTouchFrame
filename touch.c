@@ -15,42 +15,35 @@ int init_touchscreen() {
 }
 
 struct touch_coord * get_touch() {
-    int found = 0;
+    init_touchscreen();
     
-    struct input_event * eventlist = calloc(5, sizeof(struct input_event));
+    struct input_event eve;
+    struct input_event event_arr[5];
+    
+    // read 5 structs from the touch screen
     int count = 0;
-    
-    // attempt to retrieve a full set of touch coordinates
-    while (1) {        
-        int retval = read(td, &ev, sizeof(struct input_event));
-        
-        if (retval > 0) {
-            if (count <5) {
-                eventlist[count] = ev;
-            
-                if (ev.type == 0) {
-                    break;
-                }
-            
-                count++;
+    while (1) {
+        int retval = read(td, &eve, sizeof(struct input_event));
+        if (retval > -1) {
+            if (count < 5) {
+                event_arr[count] = eve;
             }
+            else {
+                close(td);
+                printf("broke \n");
+                break;
+            }
+            count++;
+            
         }
     }
     
-    // check that we have a full touch event
-    // return with NULL if we haven't
-    int i;
-    for(i=0; i<5; i++) {
-        if ((eventlist[i].value==0)&&(eventlist[i].type==0)&&(eventlist[i].code==0)) {
-            return NULL;
-        }
-    }
     
     // set the coords for the touch
-    struct touch_coord * c;
-    c->x = eventlist[0].value; // x
-    c->y = eventlist[1].value; // y
-    c->pressure = eventlist[2].value; // pressure
+    struct touch_coord * c = (struct touch_coord *)malloc(sizeof(struct touch_coord));
+    c->x = event_arr[1].value; // x
+    c->y = event_arr[2].value; // y
+    c->pressure = event_arr[3].value; // pressure
     
     return c;
 }
@@ -73,4 +66,10 @@ void print_event(struct input_event e) {
     printf("Code %ld \n", e.code);
     printf("Value %ld \n", e.value);
     printf("\n");
+}
+
+void print_touch(struct touch_coord t) {
+    printf("x: %ld \n", t.x);
+    printf("y: %ld \n", t.y);
+    printf("pressure: %ld \n", t.pressure);
 }

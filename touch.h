@@ -31,4 +31,7 @@ void ignore_touches();
 // print the info about the event
 void print_event(struct input_event e);
 
+// print details about the touch
+void print_touch(struct touch_coord t);
+
 #endif
