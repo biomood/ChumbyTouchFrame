@@ -29,6 +29,9 @@ char * rgb_to_byte(int red, int green, int blue);
 // implementation of Bresenham's line drawing algorithm
 void draw_line(int x0, int y0, int x1, int y1, char * colour);
 
+// implementation of midpoint circle algorithm
+void draw_circle(int x0, int y0, int radius, char * colour);
+
 // swap ints a and b
 void swap(int * a, int * b);
 

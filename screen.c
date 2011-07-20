@@ -89,6 +89,38 @@ void draw_line(int x0, int y0, int x1, int y1, char * colour) {
     }
 }
 
+void draw_circle(int x0, int y0, int radius, char * colour) {
+    int f = 1- radius;
+    int ddF_x = 1;
+    int ddF_y = -2 * radius;
+    int x = 0;
+    int y = radius;
+    
+    draw_pixel(x0, y0 + radius, colour);
+    draw_pixel(x0, y0 - radius, colour);
+    draw_pixel(x0 + radius, y0, colour);
+    draw_pixel(x0 - radius, y0, colour);
+    
+    while (x < y) {
+        if (f >= 0) {
+            y--;
+            ddF_y += 2;
+            f += ddF_y;
+        }
+        x++;
+        ddF_x += 2;
+        f += ddF_x;
+        draw_pixel(x0 + x, y0 + y, colour);
+        draw_pixel(x0 - x, y0 + y, colour);
+        draw_pixel(x0 + x, y0 - y, colour);
+        draw_pixel(x0 - x, y0 - y, colour);
+        draw_pixel(x0 + y, y0 + x, colour);
+        draw_pixel(x0 - y, y0 + x, colour);
+        draw_pixel(x0 + y, y0 - x, colour);
+        draw_pixel(x0 - y, y0 - x, colour);
+    }
+}
+
 void swap(int * a, int * b) {
     int *temp = a;
     a = b;
