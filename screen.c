@@ -120,9 +120,3 @@ void draw_circle(int x0, int y0, int radius, char * colour) {
         draw_pixel(x0 - y, y0 - x, colour);
     }
 }
-
-void swap(int * a, int * b) {
-    int *temp = a;
-    a = b;
-    b = temp;
-}

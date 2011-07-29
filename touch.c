@@ -3,10 +3,13 @@
 char touchstr[] = "/dev/input/event1";
 FILE * touchscreen;
 int td;
+const double touch_threshold = 300000;
 struct input_event ev;
+struct timeval endTime;
 
 int init_touchscreen() {
-    if ((td = open(touchstr, O_RDONLY))>-1){
+    if ((td = open(touchstr, O_RDWR))>-1){
+        gettimeofday(&endTime, NULL);
         return 1;
     }
     else {
@@ -14,51 +17,54 @@ int init_touchscreen() {
     }
 }
 
-struct touch_coord * get_touch() {
-    init_touchscreen();
+
+struct touch_coord get_touch2() {    
+    long int last_x;
+    long int last_y;
+    struct input_event t_eve;
     
-    struct input_event eve;
-    struct input_event event_arr[5];
-    
-    // read 5 structs from the touch screen
+    // loop over the input queue
     int count = 0;
     while (1) {
-        int retval = read(td, &eve, sizeof(struct input_event));
+        int retval = read(td, &t_eve, sizeof(struct input_event));
         if (retval > -1) {
-            if (count < 5) {
-                event_arr[count] = eve;
-            }
-            else {
-                close(td);
-                printf("broke \n");
-                break;
-            }
             count++;
             
+            // retrieve the x,y values from the touch
+            if (t_eve.type == 3 && t_eve.code == 0) 
+                last_x = t_eve.value;
+            if (t_eve.type == 3 && t_eve.code == 1) 
+                last_y = t_eve.value;
+            
+            // check if we've found the end of a touch
+            if ((t_eve.type == 0) && (t_eve.code == 0)) {
+                // call the callback function
+                if (count==5) {
+                    struct timeval nowTime;
+                    gettimeofday(&nowTime, NULL);
+                    double tS = nowTime.tv_sec*1000000 + (nowTime.tv_usec);
+                    double tE = endTime.tv_sec*1000000  + (endTime.tv_usec);
+                    
+                    endTime = nowTime;
+                    
+                    // check if the difference is less than defined time
+                    if ((tS-tE) < touch_threshold) {
+                        struct touch_coord touch;
+                        touch.x = last_x;
+                        touch.y = last_y;
+                        return touch;
+                    }
+                }
+                count = 0;
+            }
         }
     }
-    
-    
-    // set the coords for the touch
-    struct touch_coord * c = (struct touch_coord *)malloc(sizeof(struct touch_coord));
-    c->x = event_arr[1].value; // x
-    c->y = event_arr[2].value; // y
-    c->pressure = event_arr[3].value; // pressure
-    
-    return c;
 }
 
-void ignore_touches() {
-    struct input_event e;
-    int val;
-    int done = 0;
+
+void calibrate_touch(int x0, int y0, int x1, int y1, int x2, int y2) {
+    k = ((x0-x2)*(y1-y2))-((x1-x2)*(y0-y2));
     
-    while (!done) {
-        val = read(td, &e, sizeof(struct input_event));
-        if (val <=0) {
-            done = 1;
-        }
-    }
 }
 
 void print_event(struct input_event e) {
@@ -66,10 +72,4 @@ void print_event(struct input_event e) {
     printf("Code %ld \n", e.code);
     printf("Value %ld \n", e.value);
     printf("\n");
-}
-
-void print_touch(struct touch_coord t) {
-    printf("x: %ld \n", t.x);
-    printf("y: %ld \n", t.y);
-    printf("pressure: %ld \n", t.pressure);
 }
