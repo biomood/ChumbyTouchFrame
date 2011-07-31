@@ -6,6 +6,7 @@ int td;
 const double touch_threshold = 300000;
 struct input_event ev;
 struct timeval endTime;
+float k, a, b, c, d, e, f;
 
 int init_touchscreen() {
     if ((td = open(touchstr, O_RDWR))>-1){
@@ -18,7 +19,7 @@ int init_touchscreen() {
 }
 
 
-struct touch_coord get_touch2() {    
+struct touch_coord get_raw_touch() {    
     long int last_x;
     long int last_y;
     struct input_event t_eve;
@@ -62,9 +63,11 @@ struct touch_coord get_touch2() {
 }
 
 
-void calibrate_touch(int x0, int y0, int x1, int y1, int x2, int y2) {
-    k = ((x0-x2)*(y1-y2))-((x1-x2)*(y0-y2));
-    
+void calibrate_touch(struct touch_coord t0, struct touch_coord t1, struct touch_coord t2, struct pixel_coord p0, struct pixel_coord p1, struct pixel_coord p2) {
+    k = ((t0.x-t2.x)*(t1.y-t2.y))-((t1.x-t2.x)*(t0.y-t2.y));
+    a = (((p0.x-p2.x)*(t1.y-t2.y))-((p1.x-p2.x)*(t0.y-t2.y)))/k;
+    b = (((t0.x-t2.x)*(p1.x-p2.x)) - ((p0.x-p2.x)*(t1.x-t2.x)))/k;
+    c = ((t0.y*((t2.x*p1.x)-(t1.x*p2.x)))+(t1.y*((t0.x*p2.x)-(t2.x*p0.x)))+(t2.y*((t1.x*p0.x)-(t0.x*p1.x))))/k;
 }
 
 void print_event(struct input_event e) {

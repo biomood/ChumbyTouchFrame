@@ -17,35 +17,41 @@ void calibrate_screen() {
     char * black = malloc(2*sizeof(char));
     black = rgb_to_byte(0, 0, 0);
     
+    struct pixel_coord p0 = {40, 40};
+    
     // retrieve 1st touch
-    draw_cursor(40, 40);
-    draw_circle(40, 40, 5, black);
+    draw_cursor(p0.x, p0.y);
+    draw_circle(p0.x, p0.y, 5, black);
     set_screen();
-    struct touch_coord t1 = get_touch2();
+    struct touch_coord t0 = get_raw_touch();
     set_colour(white);
+    printf("Touch1: x:%ld y:%ld \n", t0.x, t0.y);
     
     sleep(1);
+    
+    struct pixel_coord p1 = {160, 150};
     
     // retrieve 2nd touch
-    draw_cursor(160, 150);
-    draw_circle(160, 150, 5, black);
+    draw_cursor(p1.x, p1.y);
+    draw_circle(p1.x, p1.y, 5, black);
     set_screen();
-    struct touch_coord t2 = get_touch2();
+    struct touch_coord t1 = get_raw_touch();
     set_colour(white);
+    printf("Touch2: x:%ld y:%ld \n", t1.x, t1.y);
     
     sleep(1);
     
+    struct pixel_coord p2 = {280, 200};
+    
     // retrieve 3rd touch
-    draw_cursor(280, 200);
-    draw_circle(280, 200, 5, black);
+    draw_cursor(p2.x, p2.y);
+    draw_circle(p2.x, p2.y, 5, black);
     set_screen();
-    struct touch_coord t3 = get_touch2();
+    struct touch_coord t2 = get_raw_touch();
     set_colour(white);
+    printf("Touch3: x:%ld y:%ld \n", t2.x, t2.y);
     
-    
-    calibrate_touch(t1.x, t1.y, t2.x, t2.y, t3.x, t3.y);
-    
-    
+    calibrate_touch(t0, t1, t2, p0, p1, p2);
 }
 
 // draws a cursor to the screen with origin at x, y
