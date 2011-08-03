@@ -48,4 +48,7 @@ void print_touch(struct touch_coord t);
 // works out the variables used for relating touch screen coords to pixel coords
 void calibrate_touch(struct touch_coord t0, struct touch_coord t1, struct touch_coord t2, struct pixel_coord p0, struct pixel_coord p1, struct pixel_coord p2);
 
+// convert raw touch to pixel coords
+struct pixel_coord raw_to_pixel(struct touch_coord touch);
+
 #endif

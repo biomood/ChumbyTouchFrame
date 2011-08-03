@@ -52,6 +52,10 @@ void calibrate_screen() {
     printf("Touch3: x:%ld y:%ld \n", t2.x, t2.y);
     
     calibrate_touch(t0, t1, t2, p0, p1, p2);
+    
+    struct pixel_coord pixel;
+    pixel = raw_to_pixel(t0);
+    printf("Calibrated touch x:%d y:%d \n", pixel.x, pixel.y);
 }
 
 // draws a cursor to the screen with origin at x, y

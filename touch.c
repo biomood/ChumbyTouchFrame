@@ -68,6 +68,24 @@ void calibrate_touch(struct touch_coord t0, struct touch_coord t1, struct touch_
     a = (((p0.x-p2.x)*(t1.y-t2.y))-((p1.x-p2.x)*(t0.y-t2.y)))/k;
     b = (((t0.x-t2.x)*(p1.x-p2.x)) - ((p0.x-p2.x)*(t1.x-t2.x)))/k;
     c = ((t0.y*((t2.x*p1.x)-(t1.x*p2.x)))+(t1.y*((t0.x*p2.x)-(t2.x*p0.x)))+(t2.y*((t1.x*p0.x)-(t0.x*p1.x))))/k;
+    d = (((p0.y-p2.y)*(t1.y-t2.y)) - ((p1.y-p2.y)*(t0.y-t2.y)))/k;
+    e = (((t0.x-t2.x)*(p1.y-p2.y)) - ((p0.y-p2.y)*(t1.x-t2.x)))/k;
+    f = ((t0.y*((t2.x*p1.y)-(t1.x*p2.y))) + (t1.y*((t0.x*p2.y)-(t2.x*p0.y))) + (t2.y*((t1.x*p0.y)-(t0.x*p1.y))))/k;
+    
+    printf("k: %f \n", k);
+    printf("a: %f \n", a);
+    printf("b: %f \n", b);
+    printf("c: %f \n", c);
+    printf("d: %f \n", d);
+    printf("e: %f \n", e);
+    printf("f: %f \n", f);
+}
+
+struct pixel_coord raw_to_pixel(struct touch_coord touch) {
+	struct pixel_coord pixel;
+	pixel.x = (int)((a*touch.x)+(b*touch.y)+c);
+	pixel.y = (int)((d*touch.x)+(e*touch.y)+f);
+	return pixel;
 }
 
 void print_event(struct input_event e) {
